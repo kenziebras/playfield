@@ -28,10 +28,12 @@ SECRET_KEY = 'django-insecure-s_l6q5han*q0u)%7^f(#=hbkqdk(t!n0d9qyl@iyd0m4652@vx
 
 # SECURITY WARNING: don't run with debug turned on in production!
 PRODUCTION = os.getenv('PRODUCTION', 'False').lower() == 'true'
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "kenzie-nibras-playfield.pbp.cs.ui.ac.id"]
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://pbp.cs.ui.ac.id/kenzie.nibras/playfield"
+]
 
 # Application definition
 
@@ -60,7 +62,7 @@ ROOT_URLCONF = 'playfield.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
