@@ -1,6 +1,7 @@
 import uuid
 from django.db import models
 from django.utils import timezone
+import datetime
 
 class Product(models.Model):
     
@@ -21,7 +22,7 @@ class Product(models.Model):
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='update')
     is_featured = models.BooleanField(default=False)
     product_views = models.PositiveIntegerField(default=0)
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(default=datetime.date.today)
 
     
     def __str__(self):
