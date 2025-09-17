@@ -1,13 +1,4 @@
-Nama : Kenzie Nibras Tradezqi
-
-NPM : 2406414776
-
-Kelas : PBP D
-
-Hobi : Tidur
-
-Jurusan : Sistem Informasi
-
+Tugas 2
 1. pertama Perlu membuat repository baru pada GitHub dengan nama folder repo yang dibebaskan. Lalu, buat repo lokal dengan nama yang sama dan masuk ke repo tersebut. Setelah itu, mengaktifkan virtual environment pada repo tersebut. Menyiapkan dependencies dan membuat proyek Django, melakukan konfigurasi environment variabel dan proyek, mengunggah proyek ke Repositori GitHub. Membuat aplikasi Main pada proyek, mengimplementasikan template, implementasikan Models, membuat dan mengaplikasikan migrasi model. Setelah melakukan itu semua, menghubungkan View dengan Template. mengonfigurasi routing URL pada Aplikasi Main. Lalu push semua kode tersebut ke dalam repository. dan yang terakhir menghubungkan repo github dan melakukan deployment melalui PWS.
 
 2. https://www.canva.com/design/DAGygA4Da5M/Ts9pm4GIVXjM1a5I8m-i3w/edit?utm_content=DAGygA4Da5M&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
@@ -18,3 +9,18 @@ Penjelasan : Secara ringkas, alur MVT pada Django dimulai saat pengguna meminta 
 4. database dapat dianggap sebagai sebuah rumah dan akan direnovasi. Proses migrasi di Django ada dua langkah. Pertama, menjalankan perintah makemigrations. Django bertugas untuk mengecek model rumahmu, dan menciptakan  blueprint atau "catatan renovasi" kebutuhan dari renovasi. Kedua, menjalankan migrate. ini memanggil Django lagi untuk mengerjakan renovasinya sesuai blueprint yang udah dibuat tadi, misalnya nambahin kamar baru (tabel) atau masang jendela (kolom) di rumahmu. Jadi, makemigrations itu bikin blueprintnya, migrate yang eksekusi rencananya.
 
 5. Django adalah framework permulaan yang menyediakan keseimbangan ideal antar kesederhanaan, struktur yang jelas, dan kelengkapan fitur yang cocok untuk pembelajaran pengembangan perangkat lunak. Hal ini dapat membantu pemula memahami fokus pada konsep inti pengembangan web tanpa kesulitan konfigurasi.
+
+Tugas 3
+1. Dalam sebuah platform, pengiriman data itu penting agar data bisa sampai ke tujuan dengan cepat, aman, dan konsisten. Kalau tidak ada mekanisme yang jelas untuk mengirim data, informasi yang sudah terkumpul jadi tidak efisien. Data delivery juga bikin arus informasi jadi lancar, agar dapat mengikuti kebutuhan kalau datanya makin banyak, dan tetap ngejaga keamanan serta aturan yang berlaku. Ujung-ujungnya, ini bikin pengalaman pengguna lebih enak karena mereka selalu dapet info yang relevan.
+
+2. JSON lebih populer dibanding XML karena strukturnya lebih sederhana, ringkas, dan mudah diproses oleh mesin maupun manusia. Selain itu, JSON terintegrasi baik dengan bahasa pemrograman modern, khususnya JavaScript, sehingga lebih efisien. XML masih berguna untuk skema data yang kompleks, tapi karena lebih ribet, JSON lebih banyak dipakai di web dan aplikasi sekarang.
+
+3. Method is_valid() pada form Django berfungsi untuk memeriksa apakah data yang dimasukkan ke dalam form sudah sesuai dengan aturan validasi yang berlaku. Saat dipanggil, method ini akan mengecek setiap field, memastikan format data benar, dan menjalankan validasi tambahan jika ada. Jika semua data valid, is_valid() akan mengembalikan nilai True; sebaliknya, jika ada kesalahan, ia akan mengembalikan False dan menyimpan pesan error pada form.errors. Method ini penting karena memastikan data yang diproses atau disimpan ke database sudah benar dan aman, sehingga aplikasi bisa berjalan dengan lebih andal.
+
+4. csrf_token di Django berfungsi untuk mencegah serangan Cross-Site Request Forgery (CSRF), yaitu serangan ketika penyerang mengirimkan request palsu atas nama pengguna tanpa disadari. Dengan adanya token ini, setiap form yang dikirim harus membawa tanda unik yang sesuai dengan yang dibuat server, sehingga request bisa dipastikan benar-benar sah.
+
+Kalau kita tidak menambahkan csrf_token, aplikasi menjadi rentan. Penyerang bisa memanfaatkan celah ini dengan membuat form atau script tersembunyi yang otomatis mengirim request ke server menggunakan akun pengguna yang sedang login. Dampaknya bisa serius, mulai dari perubahan data, transaksi ilegal, hingga penghapusan informasi penting. Karena itu, csrf_token sangat penting untuk menjaga keamanan data dan melindungi pengguna dari manipulasi berbahaya.
+
+5. Saya melakukan seperti yang di tutorial dengan memanipulasi atribut dari class yang ada di Models dan memanipulasi tampilan yang ada di main, product_view, dan create_product
+
+Bukti Screenshot Postman --> https://drive.google.com/drive/folders/1eAc50-VmsGKUbWAA_vAdJoFYi9rV7tJO?usp=drive_link
