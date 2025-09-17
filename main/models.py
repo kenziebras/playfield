@@ -26,7 +26,7 @@ class Product(models.Model):
 
     
     def __str__(self):
-        return self.title
+        return self.name
     
     @property
     def is_product_hot(self):
