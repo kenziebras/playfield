@@ -22,7 +22,12 @@
     {% endif %}
 
     <p>{{ product.description }}</p>
-    <p>Dapatkan Sepatu ini Seharga {{ product.price }}</p>
+    <p>Dapatkan Produk ini Seharga {{ product.price }}</p>
+    {% if product.user %}
+        <p>Author: {{ product.user.username }}</p>
+    {% else %}
+        <p>Author: Anonymous</p>
+    {% endif %}
 
     {% endblock content %}
 </body>

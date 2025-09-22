@@ -2,8 +2,10 @@ import uuid
 from django.db import models
 from django.utils import timezone
 import datetime
+from django.contrib.auth.models import User
 
 class Product(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     
     CATEGORY_CHOICES = [
         ('transfer', 'Transfer'),

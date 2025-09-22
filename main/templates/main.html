@@ -19,41 +19,49 @@
     <p>{{ class }}</p> <!-- Ubah sesuai dengan kelas kamu -->
     <a href="{% url 'main:create_product' %}">
         <button>+ Add Product</button>
-      </a>
-      
-      <hr>
-      
-      {% if not product_list %}
-      <p>Belum ada produk pada toko Playfield.</p>
-      {% else %}
-      
-      {% for product in product_list %}
-      <div>
-        <h2><a href="{% url 'main:show_product' product.id %}">{{ product.name }}</a></h2>
-      
-        <p>
-          <b>{{ product.get_category_display }}</b>
-          {% if product.is_featured %} | <b>Featured</b>{% endif %}
-          {% if product.is_product_hot %} | <b>Hot</b>{% endif %} | <b>Rp. {{ product.price }}</b>
-          | <i>{{ product.created_at|date:"d M Y H:i" }}</i> 
-          | Views: {{ product.product_views }}
-        </p>
-      
-        {% if product.thumbnail %}
-        <img src="{{ product.thumbnail }}" alt="thumbnail" width="150" height="100">
-        <br />
-        {% endif %}
-
-        <p><b>Price:</b> Rp {{ product.price }}</p>
-      
-        <p>{{ product.description|truncatewords:25 }}...</p>
-      
-        <p><a href="{% url 'main:show_product' product.id %}"><button>Detail</button></a></p>
-      </div>
-      
-      <hr>
-      {% endfor %}
-      
+    </a>
+    <a href="{% url 'main:logout' %}">
+      <button>Logout</button>
+    </a>
+    <h5>Sesi terakhir login: {{ last_login }}</h5>
+    <hr>
+    <a href="?filter=all">
+      <button type="button">All Articles</button>
+    </a>
+    <a href="?filter=my">
+      <button type="button">My Articles</button>
+    </a> 
+    {% if not product_list %}
+    <p>Belum ada produk pada toko Playfield.</p>
+    {% else %}
+    
+    {% for product in product_list %}
+    <div>
+      <h2><a href="{% url 'main:show_product' product.id %}">{{ product.name }}</a></h2>
+    
+      <p>
+        <b>{{ product.get_category_display }}</b>
+        {% if product.is_featured %} | <b>Featured</b>{% endif %}
+        {% if product.is_product_hot %} | <b>Hot</b>{% endif %} | <b>Rp. {{ product.price }}</b>
+        | <i>{{ product.created_at|date:"d M Y H:i" }}</i> 
+        | Views: {{ product.product_views }}
+      </p>
+    
+      {% if product.thumbnail %}
+      <img src="{{ product.thumbnail }}" alt="thumbnail" width="150" height="100">
+      <br />
       {% endif %}
+
+      <p><b>Price:</b> Rp {{ product.price }}</p>
+    
+      <p>{{ product.description|truncatewords:25 }}...</p>
+    
+      <p><a href="{% url 'main:show_product' product.id %}"><button>Detail</button></a></p>
+    </div>
+    
+    <hr>
+    {% endfor %}
+    
+    {% endif %}
 </body>
 </html>
