@@ -36,3 +36,13 @@ Tugas4
 
 5. Dengan mengerjakan bertahap dengan tutorial dan melakukan penyesuaian atau modifikasi pada views, models, dan urls yang dibuat. sehingga dapat bekerja sesuai dengan rencana dan lepas dari error.
 
+Tugas5
+1. Jika ada beberapa CSS selector untuk satu elemen, prioritas ditentukan oleh spesifisitas: inline style punya prioritas tertinggi, lalu ID selector, kemudian class/atribut/pseudo-class, dan terakhir tag/elemen. Jika spesifisitas sama, aturan yang ditulis paling akhir yang dipakai.
+
+2. Responsive design penting agar tampilan web menyesuaikan ukuran layar device, baik mobile maupun desktop. Misalnya, Instagram sudah menerapkan responsive design sehingga nyaman digunakan di HP maupun laptop, sedangkan website lama yang hanya didesain untuk desktop akan sulit digunakan di HP karena teks kecil dan layout berantakan.
+
+3. Margin adalah jarak di luar elemen terhadap elemen lain, border adalah garis tepi elemen, sedangkan padding adalah ruang di dalam elemen antara konten dan bordernya. Misalnya: margin: 10px; border: 1px solid black; padding: 20px; akan memberi jarak luar 10px, garis tepi hitam, dan ruang dalam 20px.
+
+4. Flexbox digunakan untuk mengatur elemen dalam satu dimensi (baris atau kolom) dengan fleksibel, cocok untuk alignment dan distribusi. Grid layout bekerja dua dimensi (baris dan kolom) sehingga lebih pas untuk layout kompleks seperti dashboard atau galeri.
+
+5. Saya mulai dengan membuat struktur dasar navbar di HTML, lalu menambahkan style menggunakan Tailwind agar warnanya sesuai. Setelah itu, saya tambahkan menu desktop dan mobile dengan tombol hamburger. Lalu, saya buat event JavaScript sederhana untuk toggle menu mobile. Terakhir, saya tes di berbagai ukuran layar untuk memastikan tampilannya responsif.

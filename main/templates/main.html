@@ -1,67 +1,58 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Playfield</title>
-    {% block meta %} {% endblock meta %}
-</head>
-<body>
-    {% block content %} {% endblock content %}
 
-    <h1>Playfield</h1>
-    <h4>NPM: </h4>
-    <p>{{ npm }}</p> <!-- Ubah sesuai dengan npm kamu -->
-    <h4>Name: </h4>
-    <p>{{ name }}</p> <!-- Ubah sesuai dengan nama kamu -->
-    <h4>Class: </h4>
-    <p>{{ class }}</p> <!-- Ubah sesuai dengan kelas kamu -->
-    <a href="{% url 'main:create_product' %}">
-        <button>+ Add Product</button>
-    </a>
-    <a href="{% url 'main:logout' %}">
-      <button>Logout</button>
-    </a>
-    <h5>Sesi terakhir login: {{ last_login }}</h5>
-    <hr>
-    <a href="?filter=all">
-      <button type="button">All Articles</button>
-    </a>
-    <a href="?filter=my">
-      <button type="button">My Articles</button>
-    </a> 
-    {% if not product_list %}
-    <p>Belum ada produk pada toko Playfield.</p>
-    {% else %}
-    
-    {% for product in product_list %}
-    <div>
-      <h2><a href="{% url 'main:show_product' product.id %}">{{ product.name }}</a></h2>
-    
-      <p>
-        <b>{{ product.get_category_display }}</b>
-        {% if product.is_featured %} | <b>Featured</b>{% endif %}
-        {% if product.is_product_hot %} | <b>Hot</b>{% endif %} | <b>Rp. {{ product.price }}</b>
-        | <i>{{ product.created_at|date:"d M Y H:i" }}</i> 
-        | Views: {{ product.product_views }}
-      </p>
-    
-      {% if product.thumbnail %}
-      <img src="{{ product.thumbnail }}" alt="thumbnail" width="150" height="100">
-      <br />
-      {% endif %}
+{% block meta %}
+<title>Playfield</title>
+{% endblock meta %}
 
-      <p><b>Price:</b> Rp {{ product.price }}</p>
-    
-      <p>{{ product.description|truncatewords:25 }}...</p>
-    
-      <p><a href="{% url 'main:show_product' product.id %}"><button>Detail</button></a></p>
+{% block content %}
+{% include 'navbar.html' %}
+
+<div class="bg-gray-900 w-full pt-16 min-h-screen">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- Header Section -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-200 mb-2">Playfield Products</h1>
+      <p class="text-gray-400">Explore all the products in the store</p>
     </div>
-    
-    <hr>
-    {% endfor %}
-    
+
+    <!-- Filter Section -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 bg-gray-800 rounded-lg border border-gray-700 p-4">
+      <div class="flex space-x-3 mb-4 sm:mb-0">
+        <a href="?filter=all" class="{% if request.GET.filter == 'all' or not request.GET.filter  %} bg-gradient-to-r from-gray-500 to-gray-600 text-gray-100{% else %}bg-gray-700 text-gray-200 border border-gray-600{% endif %} px-4 py-2 rounded-md font-medium transition-all hover:from-gray-400 hover:to-gray-500 hover:text-gray-900">
+          All Products
+        </a>
+        <a href="?filter=my" class="{% if request.GET.filter == 'my' %} bg-gradient-to-r from-gray-500 to-gray-600 text-gray-100{% else %}bg-gray-700 text-gray-200 border border-gray-600{% endif %} px-4 py-2 rounded-md font-medium transition-all hover:from-gray-400 hover:to-gray-500 hover:text-gray-900">
+          My Products
+        </a>
+      </div>
+      {% if user.is_authenticated %}
+        <div class="text-sm text-gray-400">
+          Last login: {{ last_login }}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Products Grid -->
+    {% if not product_list %}
+      <div class="bg-gray-800 rounded-lg border border-gray-700 p-12 text-center text-gray-400">
+        <div class="w-32 h-32 mx-auto mb-4">
+          <img src="{% static 'image/no-news.png' %}" alt="No products available" class="w-full h-full object-contain">
+        </div>
+        <h3 class="text-lg font-medium mb-2 text-gray-200">No products found</h3>
+        <p class="mb-6">Be the first to add a product to the store.</p>
+        <a href="{% url 'main:create_product' %}" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 text-gray-100 rounded-md hover:from-gray-400 hover:to-gray-500 transition-all">
+          + Add Product
+        </a>
+      </div>
+    {% else %}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for product in product_list %}
+          {% include 'card_product.html' with product=product %}
+        {% endfor %}
+      </div>
     {% endif %}
-</body>
-</html>
+  </div>
+</div>
+{% endblock content %}

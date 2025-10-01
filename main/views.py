@@ -113,6 +113,35 @@ def show_json(request):
     json_data = serializers.serialize("json", products)
     return HttpResponse(json_data, content_type="application/json")
 
+def edit_product(request, id):
+    product = get_object_or_404(Product, pk=id)
+    form = ProductForm(request.POST or None, instance=product)
+    if form.is_valid() and request.method == 'POST':
+        form.save()
+        return redirect('main:show_main')
+
+    context = {
+        'form': form
+    }
+
+    return render(request, "edit_product.html", context)
+
+def delete_product(request, id):
+    product = get_object_or_404(Product, pk=id)
+    product.delete()
+    return HttpResponseRedirect(reverse('main:show_main'))
+
+# def create_car(request):
+#     form = CarForm(request.POST or None)
+
+#     if form.is_valid() and request.method == "POST":
+#         car_entry = form.save(commit = False)
+#         car_entry.user = request.user
+#         car_entry.save()
+#         return redirect('main:show_main')
+
+#     context = {'form': form}
+#     return render(request, "create_car.html", context)
 
 # def add_employee(request):
 #     employee = Employee.objects.create(

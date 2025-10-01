@@ -1,0 +1,70 @@
+/* Input & Textarea tetap navy */
+.form-style form input,
+.form-style form textarea,
+.form-style form select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 2px solid #475569; /* dark slate border */
+    border-radius: 0.375rem;
+    background-color: #0f172a; /* deep navy background */
+    color: #e2e8f0; /* light gray text */
+    transition: all 0.2s ease-in-out;
+}
+
+.form-style form input:focus,
+.form-style form textarea:focus,
+.form-style form select:focus {
+    outline: none;
+    border-color: #38bdf8; /* neon blue focus tetap */
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.6);
+    background-color: #1e293b;
+}
+
+/* Checkbox metallic grey effect */
+.form-style input[type="checkbox"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    padding: 0;
+    border: 2px solid #475569;
+    border-radius: 0.375rem;
+    background-color: #0f172a; /* tetap navy */
+    cursor: pointer;
+    position: relative;
+    appearance: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.form-style input[type="checkbox"]:checked {
+    background: linear-gradient(145deg, #6b7280, #9ca3af); /* metallic gradient */
+    border-color: #9ca3af;
+    box-shadow: 0 0 8px rgba(156, 163, 175, 0.8);
+}
+
+.form-style input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #1f2937; /* dark checkmark */
+    font-weight: bold;
+}
+
+/* Tombol submit metallic grey */
+.form-style button,
+.form-style input[type="submit"] {
+    background: linear-gradient(145deg, #6b7280, #9ca3af);
+    color: #0f172a; /* dark text on metallic */
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.form-style button:hover,
+.form-style input[type="submit"]:hover {
+    background: linear-gradient(145deg, #9ca3af, #d1d5db);
+    box-shadow: 0 0 10px rgba(156, 163, 175, 0.7);
+}
