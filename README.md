@@ -46,3 +46,43 @@ Tugas5
 4. Flexbox digunakan untuk mengatur elemen dalam satu dimensi (baris atau kolom) dengan fleksibel, cocok untuk alignment dan distribusi. Grid layout bekerja dua dimensi (baris dan kolom) sehingga lebih pas untuk layout kompleks seperti dashboard atau galeri.
 
 5. Saya mulai dengan membuat struktur dasar navbar di HTML, lalu menambahkan style menggunakan Tailwind agar warnanya sesuai. Setelah itu, saya tambahkan menu desktop dan mobile dengan tombol hamburger. Lalu, saya buat event JavaScript sederhana untuk toggle menu mobile. Terakhir, saya tes di berbagai ukuran layar untuk memastikan tampilannya responsif.
+
+
+Tugas 6
+1. Apa perbedaan antara synchronous request dan asynchronous request?
+Perbedaan mendasar terletak pada bagaimana browser menangani proses tunggu (waiting).
+
+Synchronous Request (Sinkron): Bekerja seperti panggilan telepon. Saat browser mengirim permintaan ke server, ia akan berhenti dan menunggu sampai server memberikan jawaban. Selama menunggu, pengguna tidak bisa melakukan interaksi apa pun dengan halaman web (UI menjadi frozen atau tidak responsif). Proses ini bersifat blocking.
+
+Asynchronous Request (Asinkron): Bekerja seperti mengirim pesan chat. Browser mengirim permintaan ke server di "belakang layar" (background), dan tetap melanjutkan aktivitas lain tanpa harus menunggu jawaban. Pengguna bisa terus berinteraksi dengan halaman. Saat jawaban dari server tiba, hanya bagian tertentu dari halaman yang akan diperbarui sesuai data yang diterima. Proses ini bersifat non-blocking dan inilah prinsip yang digunakan oleh AJAX.
+
+2. Alur kerja AJAX dalam konteks proyek Django ini adalah sebagai berikut:
+
+Pemicu di Frontend: Pengguna melakukan aksi, misalnya menekan tombol "Publish News" pada modal. Aksi ini memicu sebuah fungsi JavaScript.
+
+Request oleh JavaScript: Fungsi JavaScript menggunakan fetch() untuk mengirim permintaan (misalnya, POST) ke URL spesifik yang sudah terdaftar di urls.py Django (contoh: /create-product-ajax/). Request ini membawa data dari form dan juga header penting seperti X-CSRFToken untuk keamanan.
+
+Routing oleh Django: urls.py menerima request dan mencocokkannya dengan view yang sesuai di views.py (contoh: create_product_ajax).
+
+Pemrosesan di View: View di views.py menerima data, melakukan validasi (misalnya, menggunakan ProductForm), menyimpan data ke database, dan menyiapkan respons.
+
+Response dalam Format JSON: Berbeda dengan render biasa yang mengembalikan file HTML, view ini mengembalikan JsonResponse. Isinya adalah data terstruktur (misalnya, {"status": "success", "message": "Product berhasil dibuat!"}).
+
+Manipulasi DOM oleh JavaScript: JavaScript di frontend menerima respons JSON ini. Jika statusnya "success", JavaScript akan secara dinamis memperbarui halaman—misalnya, dengan menutup modal, menampilkan notifikasi toast, dan memuat ulang daftar produk—semua tanpa me-refresh halaman.
+
+3. Pengalaman Pengguna (UX) yang Lebih Baik: Interaksi terasa lebih cepat, mulus, dan responsif seperti aplikasi desktop karena tidak ada flash putih atau jeda akibat reload halaman penuh.
+
+Mengurangi Beban Server & Bandwidth: Server hanya mengirimkan paket data JSON yang berukuran kecil, bukan file HTML utuh yang lebih besar. Ini menghemat bandwidth dan sumber daya server.
+
+Efisiensi: Hanya bagian halaman yang relevan yang diperbarui. Misalnya, saat menambah produk, hanya daftar produk yang di-refresh, bukan navbar atau footer.
+
+4. Keamanan adalah prioritas utama, terutama untuk autentikasi. Berikut adalah langkah-langkah penting:
+
+Gunakan CSRF Token: Semua permintaan POST, PUT, DELETE yang mengubah data, termasuk login dan register via AJAX, wajib menyertakan CSRF Token. Token ini dikirim melalui request header (X-CSRFToken) untuk memastikan permintaan berasal dari situs kita sendiri.
+
+Validasi di Sisi Server: Jangan pernah percaya data yang dikirim dari frontend. Selalu lakukan validasi ulang di view Django menggunakan UserCreationForm dan AuthenticationForm untuk memastikan data bersih dan aman sebelum diproses.
+
+Gunakan HTTPS: Seluruh komunikasi, terutama yang melibatkan pengiriman password, harus dienkripsi menggunakan HTTPS untuk mencegah serangan man-in-the-middle.
+
+Otorisasi di Setiap Endpoint: Untuk fitur yang memerlukan login (seperti edit/hapus produk), setiap view AJAX harus selalu memeriksa apakah pengguna sudah diautentikasi (@login_required) dan memiliki hak akses yang sesuai (if product.user == request.user).
+
