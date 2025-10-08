@@ -11,6 +11,9 @@ from django.contrib.auth.decorators import login_required
 import datetime
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 @login_required(login_url='/login')
 def show_main(request):
@@ -131,6 +134,97 @@ def delete_product(request, id):
     product.delete()
     return HttpResponseRedirect(reverse('main:show_main'))
 
+@login_required(login_url='/login')
+@csrf_exempt
+def create_product_ajax(request):
+    if request.method == "POST":
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.user = request.user
+            product.save()
+            return JsonResponse({"status": "success", "message": "Product created successfully!"}, status=201)
+        else:
+            return JsonResponse({"status": "error", "errors": form.errors}, status=400)
+    return JsonResponse({"status": "error", "message": "Invalid request method"}, status=405)
+
+@login_required(login_url='/login')
+def get_product_json(request, id):
+    product = get_object_or_404(Product, pk=id)
+    # Pastikan hanya pemilik yang bisa mengambil data untuk diedit
+    if product.user != request.user:
+        return JsonResponse({"status": "error", "message": "Unauthorized"}, status=403)
+
+    data = {
+        "name": product.name,
+        "price": product.price,
+        "description": product.description,
+        "thumbnail": product.thumbnail,
+        "category": product.category,
+        "is_featured": product.is_featured,
+    }
+    return JsonResponse(data)
+
+
+@login_required(login_url='/login')
+@csrf_exempt
+def edit_product_ajax(request, id):
+    product = get_object_or_404(Product, pk=id)
+    if product.user != request.user:
+        return JsonResponse({"status": "error", "message": "Unauthorized"}, status=403)
+
+    if request.method == "POST":
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({"status": "success", "message": "Product updated successfully!"})
+        else:
+            return JsonResponse({"status": "error", "errors": form.errors}, status=400)
+    return JsonResponse({"status": "error", "message": "Invalid request method"}, status=405)
+
+
+@login_required(login_url='/login')
+@csrf_exempt
+def delete_product_ajax(request, id):
+    product = get_object_or_404(Product, pk=id)
+    if product.user != request.user:
+        return JsonResponse({"status": "error", "message": "Unauthorized"}, status=403)
+
+    if request.method == "POST": # Menggunakan POST untuk keamanan
+        product.delete()
+        return JsonResponse({"status": "success", "message": "Product deleted successfully!"})
+    return JsonResponse({"status": "error", "message": "Invalid request method"}, status=405)
+
+@csrf_exempt
+def register_ajax(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'status': 'success', 'message': 'Registration successful!'}, status=201)
+        else:
+            return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
+
+@csrf_exempt
+def login_ajax(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            response_data = {'status': 'success', 'message': 'Login successful!'}
+            # Buat response JSON dan set cookie di dalamnya
+            response = JsonResponse(response_data)
+            response.set_cookie('last_login', str(datetime.datetime.now()))
+            return response
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Invalid credentials'}, status=400)
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
+# Hapus view edit_product dan delete_product yang lama jika ada
+# View create_product juga tidak akan digunakan lagi untuk render form, tapi bisa dibiarkan
 # def create_car(request):
 #     form = CarForm(request.POST or None)
 

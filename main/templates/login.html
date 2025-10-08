@@ -107,4 +107,35 @@
     </div>
   </div>
 </div>
+
+<script>
+    // Tampilkan pesan dari registrasi jika ada
+    const authMessage = sessionStorage.getItem('authMessage');
+    if (authMessage) {
+        // Anda bisa membuat fungsi toast global atau alert sederhana
+        alert(authMessage);
+        sessionStorage.removeItem('authMessage');
+    }
+
+    document.querySelector('form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const username = this.username.value;
+        const password = this.password.value;
+
+        const response = await fetch("{% url 'main:login_ajax' %}", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            alert(data.message); // Atau gunakan toast
+            window.location.href = "{% url 'main:show_main' %}";
+        } else {
+            alert(data.message);
+        }
+    });
+</script>
 {% endblock content %}

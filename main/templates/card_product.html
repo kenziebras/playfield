@@ -1,6 +1,5 @@
 {% load static %}
 <article class="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden hover:shadow-2xl hover:shadow-gray-600/50 transition-shadow duration-300">
-  <!-- Thumbnail -->
   <div class="aspect-[16/9] relative overflow-hidden">
     {% if product.thumbnail %}
       <img src="{{ product.thumbnail }}" alt="{{ product.name }}" class="w-full h-full object-contain">
@@ -8,14 +7,12 @@
       <div class="w-full h-full bg-gray-900/50"></div>
     {% endif %}
 
-    <!-- Category Badge -->
     <div class="absolute top-3 left-3">
       <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-gradient-to-r from-gray-500 to-gray-600 text-gray-100">
         {{ product.get_category_display }}
       </span>
     </div>
 
-    <!-- Status Badges -->
     <div class="absolute top-3 right-3 flex space-x-2">
       {% if product.is_featured %}
         <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gradient-to-r from-yellow-500 to-yellow-400 text-gray-900">
@@ -30,7 +27,6 @@
     </div>
   </div>
 
-  <!-- Content -->
   <div class="p-5">
     <div class="flex items-center text-sm text-gray-400 mb-3">
       <time datetime="{{ product.created_at|date:'c' }}">
@@ -52,19 +48,18 @@
 
     <p class="text-gray-200 font-medium mb-4">Price: Rp {{ product.price }}</p>
 
-    <!-- Action Buttons -->
     {% if user.is_authenticated and product.user == user %}
       <div class="flex items-center justify-between pt-4 border-t border-gray-700">
         <a href="{% url 'main:show_product' product.id %}" class="text-gray-300 hover:text-gray-100 font-medium text-sm transition-colors">
           Detail
         </a>
         <div class="flex space-x-2">
-          <a href="{% url 'main:edit_product' product.pk %}" class="text-gray-400 hover:text-gray-200 text-sm transition-colors">
+          <button onclick="showModal('form-product-modal', 'update', '{{ product.pk }}')" class="text-gray-400 hover:text-gray-200 text-sm transition-colors">
             Edit
-          </a>
-          <a href="{% url 'main:delete_product' product.pk %}" class="text-red-500 hover:text-red-400 text-sm transition-colors">
+          </button>
+          <button onclick="showModal('delete-confirm-modal', 'delete', '{{ product.pk }}')" class="text-red-500 hover:text-red-400 text-sm transition-colors">
             Delete
-          </a>
+          </button>
         </div>
       </div>
     {% else %}
