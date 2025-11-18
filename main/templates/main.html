@@ -36,6 +36,7 @@
         <a href="?filter=my" class="{% if request.GET.filter == 'my' %} bg-gradient-to-r from-gray-500 to-gray-600 text-gray-100{% else %}bg-gray-700 text-gray-200 border border-gray-600{% endif %} px-4 py-2 rounded-md font-medium transition-all hover:from-gray-400 hover:to-gray-500 hover:text-gray-900">
           My Products
         </a>
+
       </div>
       {% if user.is_authenticated %}
       <div class="text-sm text-gray-400">Last login: {{ last_login }}</div>
@@ -69,19 +70,18 @@
 
   </div>
 </div>
-
 {% include 'modal.html' %}
 
 <script>
-    const DJANGO_VARS = {
-        getProductsUrl: "{% url 'main:show_json' %}",
-        createProductUrl: "{% url 'main:create_product_ajax' %}",
-        getProductJsonUrlBase: "/get-product-json/",
-        editProductUrlBase: "/edit-product-ajax/",
-        deleteProductUrlBase: "/delete-product-ajax/",
-        currentUserId: "{{ request.user.id|default_if_none:'' }}",
-        csrfToken: "{{ csrf_token }}"
-    };
+  const DJANGO_VARS = {
+    getProductsUrl: "{% url 'main:show_json' %}",
+    createProductUrl: "{% url 'main:create_product_ajax' %}",
+    getProductJsonUrlBase: "/get-product-json/",
+    editProductUrlBase: "/edit-product-ajax/",
+    deleteProductUrlBase: "/delete-product-ajax/",
+    currentUserId: "{{ request.user.id|default_if_none:'' }}",
+    csrfToken: "{{ csrf_token }}"
+  };
 </script>
 <script src="{% static 'js/main.js' %}" defer></script>
 

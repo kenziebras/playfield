@@ -1,9 +1,9 @@
-from django.urls import path
+from django.urls import path, include
 from main.views import (
     show_main, create_product, show_product, show_xml, show_json, 
     show_xml_by_id, show_json_by_id, register, login_user, logout_user, 
     edit_product, delete_product, create_product_ajax, get_product_json,
-    edit_product_ajax, delete_product_ajax, register_ajax, login_ajax
+    edit_product_ajax, delete_product_ajax, register_ajax, login_ajax, proxy_image
 )
 
 app_name = 'main'
@@ -34,4 +34,7 @@ urlpatterns = [
     path('logout/', logout_user, name='logout'),
     path('register-ajax/', register_ajax, name='register_ajax'),
     path('login-ajax/', login_ajax, name='login_ajax'),
+
+    path('auth/', include('authentication.urls')),
+    path('proxy-image/', proxy_image, name='proxy_image'),
 ]

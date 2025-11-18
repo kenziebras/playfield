@@ -14,6 +14,7 @@ from django.urls import reverse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+import requests
 
 @login_required(login_url='/login')
 def show_main(request):
@@ -223,6 +224,28 @@ def login_ajax(request):
         else:
             return JsonResponse({'status': 'error', 'message': 'Invalid credentials'}, status=400)
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
+
+
+def proxy_image(request):
+    image_url = request.GET.get('url')
+    if not image_url:
+        return HttpResponse('No URL provided', status=400)
+    
+    try:
+        # Fetch image from external source
+        response = requests.get(image_url, timeout=10)
+        response.raise_for_status()
+        
+        # Return the image with proper content type
+        return HttpResponse(
+            response.content,
+            content_type=response.headers.get('Content-Type', 'image/jpeg')
+        )
+    except requests.RequestException as e:
+        return HttpResponse(f'Error fetching image: {str(e)}', status=500)
+
+
+
 # Hapus view edit_product dan delete_product yang lama jika ada
 # View create_product juga tidak akan digunakan lagi untuk render form, tapi bisa dibiarkan
 # def create_car(request):
