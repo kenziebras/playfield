@@ -1,5 +1,5 @@
 {% load static %}
-<article class="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden hover:shadow-2xl hover:shadow-gray-600/50 transition-shadow duration-300">
+<article id="product-card-{{ product.pk }}" class="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden hover:shadow-2xl hover:shadow-gray-600/50 transition-shadow duration-300">
   <div class="aspect-[16/9] relative overflow-hidden">
     {% if product.thumbnail %}
       <img src="{{ product.thumbnail }}" alt="{{ product.name }}" class="w-full h-full object-contain">

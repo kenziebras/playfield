@@ -102,6 +102,8 @@ function hideModal(modalId) {
 
 // --- DYNAMIC CARD BUILDER ---
 // Fungsi ini membuat HTML untuk satu kartu produk dari data JSON
+// --- DYNAMIC CARD BUILDER ---
+// Fungsi ini membuat HTML untuk satu kartu produk dari data JSON
 function buildProductCard(product) {
     const fields = product.fields;
     const pk = product.pk;
@@ -132,9 +134,9 @@ function buildProductCard(product) {
           </div>`;
     }
 
-    // Template string untuk membuat HTML kartu
+    // Ganti tag <article> ini untuk menambahkan ID unik
     return `
-        <article class="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden hover:shadow-2xl hover:shadow-gray-600/50 transition-shadow duration-300">
+        <article id="product-card-${pk}" class="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden hover:shadow-2xl hover:shadow-gray-600/50 transition-shadow duration-300">
           <div class="p-5">
             <div class="flex items-center text-sm text-gray-400 mb-3">
               <time>${new Date(fields.created_at).toLocaleDateString("en-US", { day: 'numeric', month: 'short', year: 'numeric' })}</time>
@@ -150,7 +152,6 @@ function buildProductCard(product) {
           </div>
         </article>`;
 }
-
 // --- AJAX FETCH & RENDER ---
 async function fetchProducts() {
     showState('loading');
@@ -225,18 +226,32 @@ async function handleUpdateSubmit(event, productId) {
 }
 
 async function handleDelete(productId) {
+    // 1. Kirim request POST ke Django
     const response = await fetch(`${DELETE_PRODUCT_URL_BASE}${productId}/`, {
         method: 'POST',
         headers: { "X-CSRFToken": CSRF_TOKEN }
     });
 
     const data = await response.json();
+    
     if (response.ok) {
         hideModal('delete-confirm-modal');
         showToast(data.message, 'success');
-        fetchProducts();
+        
+        // 2. HAPUS KARTU LANGSUNG DARI DOM UNTUK PENGALAMAN AJAX YANG CEPAT
+        const cardElement = document.getElementById(`product-card-${productId}`);
+        if(cardElement) {
+            cardElement.remove();
+        }
+        
+        // Cek jika setelah dihapus grid menjadi kosong
+        // Lakukan pemanggilan fetchProducts() HANYA jika list menjadi kosong
+        if(grid.childElementCount === 0) {
+            fetchProducts();
+        }
+
     } else {
-        showToast('Failed to delete product.', 'error');
+        showToast('Failed to delete product: ' + (data.message || 'Server error.'), 'error');
     }
 }
 
@@ -249,3 +264,8 @@ document.addEventListener('DOMContentLoaded', () => {
         refreshButton.addEventListener('click', fetchProducts);
     }
 });
+
+window.showModal = showModal;
+window.hideModal = hideModal;
+window.fetchProducts = fetchProducts;
+window.deleteProduct = handleDelete; // Opsional jika Anda memanggilnya langsung
