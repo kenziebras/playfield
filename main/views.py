@@ -265,3 +265,9 @@ def create_product_flutter(request):
             return JsonResponse({"status": "error", "message": str(e)}, status=500)
     else:
         return JsonResponse({"status": "error"}, status=401)
+
+@login_required # Pastikan import login_required sudah ada
+def show_json_by_user(request):
+    # Filter produk hanya milik user yang sedang login
+    products = Product.objects.filter(user=request.user) 
+    return HttpResponse(serializers.serialize("json", products), content_type="application/json")
