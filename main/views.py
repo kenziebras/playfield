@@ -244,29 +244,24 @@ def proxy_image(request):
     except requests.RequestException as e:
         return HttpResponse(f'Error fetching image: {str(e)}', status=500)
 
-
-
-# Hapus view edit_product dan delete_product yang lama jika ada
-# View create_product juga tidak akan digunakan lagi untuk render form, tapi bisa dibiarkan
-# def create_car(request):
-#     form = CarForm(request.POST or None)
-
-#     if form.is_valid() and request.method == "POST":
-#         car_entry = form.save(commit = False)
-#         car_entry.user = request.user
-#         car_entry.save()
-#         return redirect('main:show_main')
-
-#     context = {'form': form}
-#     return render(request, "create_car.html", context)
-
-# def add_employee(request):
-#     employee = Employee.objects.create(
-#         name = "Adam",
-#         age = 20,
-#         persona = "Mahasiswa Fasilkom Angkatan 2007"
-#     )
-
-#     return HttpResponse(content = employee.name)
-
-# # Create your views here.
+@csrf_exempt
+def create_product_flutter(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            new_product = Product.objects.create(
+                user=request.user,
+                name=data["name"],
+                price=int(data["price"]),
+                description=data["description"],
+                category=data["category"],
+                # Handle thumbnail dan is_featured jika dikirim, berikan default jika tidak
+                thumbnail=data.get("thumbnail", ""), 
+                is_featured=data.get("is_featured", False)
+            )
+            new_product.save()
+            return JsonResponse({"status": "success"}, status=200)
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=500)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
